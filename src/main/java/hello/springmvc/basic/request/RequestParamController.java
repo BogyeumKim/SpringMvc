@@ -1,7 +1,9 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,12 +69,36 @@ public class RequestParamController {
         return "ok";
     }
 
-    @RequestMapping("/request-param-default")
+    @RequestMapping("/request-param-param")
     @ResponseBody
     public String requestParamMap(@RequestParam Map<String ,Object> paramMap) {
         /* Map으로 담아 바인딩도 가능 MultiValueMap으로 중복 키값도 가능 */
         log.info("username={},age={}", paramMap.get("username"), paramMap.get("age"));
 
+        return "ok";
+    }
+
+
+    @RequestMapping("/model-attribute-v1")
+    @ResponseBody
+    public String modelAttributeV1(@ModelAttribute HelloData helloData ) {
+        /* 쿼리 파라미터 이름이 username이면 setUsername 메서드를 찾아 알아서 바인딩해줌. */
+
+//        HelloData helloData = new HelloData();
+//        helloData.setUsername(username);
+//        helloData.setAge(age);
+
+        log.info("username={},age={}", helloData.getUsername(), helloData.getAge());
+        log.info("helloData={}",helloData);
+        return "ok";
+    }
+
+    @RequestMapping("/model-attribute-v2")
+    @ResponseBody
+    public String modelAttributeV2(HelloData helloData ) {
+        /* 똑같이 String , int , Integer 같은 단순 타입이면 @RequestParam 생략한것처럼 @ModelAttribute도 생략 가능함. */
+        log.info("username={},age={}", helloData.getUsername(), helloData.getAge());
+        log.info("helloData={}",helloData);
         return "ok";
     }
 }
